@@ -21,7 +21,9 @@ const LABEL_WIDTH = 120;
 
 function timeToX(dateString: string): number {
   const d = new Date(dateString);
-  return (d.getHours() + d.getMinutes() / 60) * (GRID_WIDTH / 24);
+  // return (d.getHours() + d.getMinutes() / 60) * (GRID_WIDTH / 24);
+  const hours = d.getHours() + d.getMinutes() / 60;
+  return hours === 0 ? GRID_WIDTH : hours * (GRID_WIDTH / 24);
 }
 
 function getRowIndex(type: Segment["type"]): number {
@@ -34,7 +36,7 @@ function getColor(type: Segment["type"]): string {
 
 export default function LogGrid({ logs }: Props) {
   const svgHeight = ROW_HEIGHT * ROWS.length;
-
+  console.log({ logs });
   return (
     <div className="space-y-6">
       {logs.map((day) => (
