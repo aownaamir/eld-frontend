@@ -31,12 +31,18 @@ const STOP_LABELS: Record<string, string> = {
   rest: "R",
 };
 
+const LEGEND_ICONS: Record<string, string> = {
+  pickup: "Pickup",
+  dropoff: "Dropoff",
+  fuel: "Fuel",
+  rest: "Rest",
+};
+
 export default function MapView({ geometry, stops = [] }: Props) {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstance = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<mapboxgl.Marker[]>([]);
 
-  // Init map once
   useEffect(() => {
     if (!mapRef.current) return;
 
@@ -48,7 +54,7 @@ export default function MapView({ geometry, stops = [] }: Props) {
     });
 
     mapInstance.current.addControl(
-      new mapboxgl.NavigationControl(),
+      new mapboxgl.NavigationControl({ showCompass: false }),
       "top-right",
     );
 
@@ -57,89 +63,72 @@ export default function MapView({ geometry, stops = [] }: Props) {
     };
   }, []);
 
-  // Update route and stops when data changes
   useEffect(() => {
     if (!mapInstance.current || !geometry?.length) return;
 
     const map = mapInstance.current;
 
     const draw = () => {
-      // Remove old markers
       markersRef.current.forEach((m) => m.remove());
       markersRef.current = [];
 
-      // Remove old layers/sources
       if (map.getLayer("route-line")) map.removeLayer("route-line");
       if (map.getLayer("route-glow")) map.removeLayer("route-glow");
       if (map.getSource("route")) map.removeSource("route");
 
-      // Add route source
       map.addSource("route", {
         type: "geojson",
         data: {
           type: "Feature",
-          geometry: {
-            type: "LineString",
-            coordinates: geometry,
-          },
+          geometry: { type: "LineString", coordinates: geometry },
         },
       });
 
-      // Glow layer under
       map.addLayer({
         id: "route-glow",
         type: "line",
         source: "route",
         paint: {
-          "line-width": 8,
+          "line-width": 10,
           "line-color": "#3b82f6",
-          "line-opacity": 0.2,
-          "line-blur": 4,
+          "line-opacity": 0.15,
+          "line-blur": 6,
         },
       });
 
-      // Main route line
       map.addLayer({
         id: "route-line",
         type: "line",
         source: "route",
-        layout: {
-          "line-join": "round",
-          "line-cap": "round",
-        },
+        layout: { "line-join": "round", "line-cap": "round" },
         paint: {
           "line-width": 3,
           "line-color": "#3b82f6",
-          "line-opacity": 0.9,
+          "line-opacity": 0.95,
         },
       });
 
-      // Add stop markers
       stops.forEach((stop) => {
         const color = STOP_COLORS[stop.type] ?? "#fff";
         const letter = STOP_LABELS[stop.type] ?? "•";
 
         const el = document.createElement("div");
         el.style.cssText = `
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          background: ${color};
-          border: 2px solid white;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 11px;
-          font-weight: bold;
-          color: white;
-          cursor: pointer;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+          width: 26px; height: 26px; border-radius: 50%;
+          background: ${color}; border: 2px solid rgba(255,255,255,0.9);
+          display: flex; align-items: center; justify-content: center;
+          font-size: 10px; font-weight: 700; color: white; cursor: pointer;
+          box-shadow: 0 2px 12px rgba(0,0,0,0.5);
         `;
         el.innerText = letter;
 
-        const popup = new mapboxgl.Popup({ offset: 15 }).setHTML(`
-          <div style="font-family: sans-serif; font-size: 13px; padding: 4px 6px;">
-            <strong>${stop.label}</strong>
+        const popup = new mapboxgl.Popup({
+          offset: 14,
+          closeButton: false,
+          className: "eld-popup",
+        }).setHTML(`
+          <div style="font-family: system-ui; font-size: 12px; font-weight: 500; padding: 2px 4px;">
+            ${stop.label}
           </div>
         `);
 
@@ -151,7 +140,6 @@ export default function MapView({ geometry, stops = [] }: Props) {
         markersRef.current.push(marker);
       });
 
-      // Fit map to route
       const bounds = geometry.reduce(
         (b, coord) => b.extend(coord as [number, number]),
         new mapboxgl.LngLatBounds(
@@ -160,29 +148,29 @@ export default function MapView({ geometry, stops = [] }: Props) {
         ),
       );
 
-      map.fitBounds(bounds, { padding: 60, duration: 1000 });
+      map.fitBounds(bounds, { padding: 50, duration: 900, maxZoom: 10 });
     };
 
-    if (map.isStyleLoaded()) {
-      draw();
-    } else {
-      map.once("load", draw);
-    }
+    if (map.isStyleLoaded()) draw();
+    else map.once("load", draw);
   }, [geometry, stops]);
 
   return (
     <div className="relative">
-      <div ref={mapRef} className="w-full h-[450px]" />
+      {/* Map */}
+      <div ref={mapRef} className="w-full h-[300px]" />
 
-      {/* Map Legend */}
-      <div className="absolute bottom-4 left-4 bg-zinc-900 bg-opacity-90 border border-zinc-700 rounded-xl px-4 py-3 flex flex-col gap-2">
+      {/* Legend — horizontal strip at bottom */}
+      <div className="absolute bottom-3 left-3 flex items-center gap-3 bg-zinc-900/90 backdrop-blur-sm border border-zinc-700/60 rounded-lg px-3 py-2">
         {Object.entries(STOP_COLORS).map(([type, color]) => (
-          <div key={type} className="flex items-center gap-2">
+          <div key={type} className="flex items-center gap-1.5">
             <div
-              className="w-4 h-4 rounded-full border border-white"
+              className="w-2.5 h-2.5 rounded-full border border-white/30 shrink-0"
               style={{ backgroundColor: color }}
             />
-            <span className="text-xs text-zinc-300 capitalize">{type}</span>
+            <span className="text-[11px] text-zinc-400 capitalize leading-none">
+              {LEGEND_ICONS[type]}
+            </span>
           </div>
         ))}
       </div>
