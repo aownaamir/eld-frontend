@@ -51,7 +51,6 @@ export default function MapView({ geometry, stops = [], fill = false }: Props) {
       style: "mapbox://styles/mapbox/light-v11",
       center: [-98, 39],
       zoom: 3.5,
-      // attributionControl: false,
     });
     // mapInstance.current.addControl(
     //   new mapboxgl.NavigationControl({ showCompass: false }),
@@ -82,7 +81,6 @@ export default function MapView({ geometry, stops = [], fill = false }: Props) {
         },
       });
 
-      // White casing for contrast on light map
       map.addLayer({
         id: "route-casing",
         type: "line",
@@ -152,21 +150,6 @@ export default function MapView({ geometry, stops = [], fill = false }: Props) {
         className={fill ? "w-full h-full" : "w-full h-[300px]"}
         style={fill ? { minHeight: 260 } : undefined}
       />
-
-      {/* Legend */}
-      {/* <div className="absolute bottom-3 left-3 flex items-center gap-3 bg-white border border-zinc-200 px-3 py-2 shadow-sm">
-        {Object.entries(STOP_COLORS).map(([type, color]) => (
-          <div key={type} className="flex items-center gap-1.5">
-            <div
-              className="w-2.5 h-2.5 shrink-0"
-              style={{ backgroundColor: color }}
-            />
-            <span className="text-[11px] text-zinc-500 capitalize leading-none">
-              {LEGEND_NAMES[type]}
-            </span>
-          </div>
-        ))}
-      </div> */}
     </div>
   );
 }

@@ -63,8 +63,6 @@ export default function LocationInput({
               : "border-zinc-200 hover:border-zinc-300"
           }`}
         >
-          {/* <span className="text-zinc-400 text-sm shrink-0">{icon ?? "📍"}</span> */}
-
           <input
             value={query}
             onChange={handleChange}
@@ -90,7 +88,7 @@ export default function LocationInput({
           )}
         </div>
 
-        {/* Dropdown */}
+        {/* Dropdown for locs*/}
         {results.length > 0 && (
           <div className="absolute top-full mt-0.5 w-full bg-white border border-zinc-200 overflow-hidden z-50 shadow-lg shadow-zinc-100">
             {results.map((place, i) => (
@@ -104,9 +102,6 @@ export default function LocationInput({
                 }}
                 className="flex items-start gap-3 px-4 py-3 hover:bg-zinc-50 cursor-pointer transition border-b border-zinc-100 last:border-0"
               >
-                {/* <span className="text-zinc-300 text-xs mt-0.5 shrink-0">
-                  📍
-                </span> */}
                 <div className="flex flex-col min-w-0">
                   <span className="text-sm text-zinc-900 truncate font-medium">
                     {place.place_name.split(",")[0]}
