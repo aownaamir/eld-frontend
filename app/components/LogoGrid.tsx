@@ -19,11 +19,11 @@ const ROW_HEIGHT = 48;
 const GRID_WIDTH = 800;
 const LABEL_WIDTH = 120;
 
-function timeToX(dateString: string): number {
+function timeToX(dateString: string, isEnd = false): number {
   const d = new Date(dateString);
-  // return (d.getHours() + d.getMinutes() / 60) * (GRID_WIDTH / 24);
-  const hours = d.getHours() + d.getMinutes() / 60;
-  return hours === 0 ? GRID_WIDTH : hours * (GRID_WIDTH / 24);
+  const totalMinutes = d.getHours() * 60 + d.getMinutes();
+  if (isEnd && totalMinutes === 0) return GRID_WIDTH; // midnight end = right edge
+  return (totalMinutes / (24 * 60)) * GRID_WIDTH;
 }
 
 function getRowIndex(type: Segment["type"]): number {
@@ -36,7 +36,7 @@ function getColor(type: Segment["type"]): string {
 
 export default function LogGrid({ logs }: Props) {
   const svgHeight = ROW_HEIGHT * ROWS.length;
-  console.log({ logs });
+
   return (
     <div className="space-y-6">
       {logs.map((day) => (
@@ -53,17 +53,14 @@ export default function LogGrid({ logs }: Props) {
               <h3 className="font-semibold text-white">Day {day.day}</h3>
             </div>
             {/* Legend */}
-            <div className="flex items-center gap-4">
+            {/* <div className="flex items-center gap-4">
               {ROWS.map((r) => (
                 <div key={r.key} className="flex items-center gap-1.5">
-                  <div
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: r.color }}
-                  />
+                  <div className="w-3 h-3 rounded-full bg-blue-500" />
                   <span className="text-xs text-zinc-400">{r.label}</span>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
 
           {/* Grid */}
@@ -141,54 +138,99 @@ export default function LogGrid({ logs }: Props) {
                     />
                   ))}
 
-                  {/* Segments */}
-                  {day.segments.map((seg, i) => {
-                    const x1 = timeToX(seg.start);
-                    const x2 = timeToX(seg.end);
-                    const rowIdx = getRowIndex(seg.type);
-                    const y = rowIdx * ROW_HEIGHT;
-                    const color = getColor(seg.type);
-                    const segWidth = Math.max(x2 - x1, 2);
-
-                    return (
-                      <g key={i}>
-                        {/* Background fill */}
-                        <rect
-                          x={x1}
-                          y={y + 6}
-                          width={segWidth}
-                          height={ROW_HEIGHT - 12}
-                          fill={color}
-                          fillOpacity={0.15}
-                          rx={3}
-                        />
-                        {/* Main line */}
-                        <line
-                          x1={x1}
-                          y1={y + ROW_HEIGHT / 2}
-                          x2={x1 + segWidth}
-                          y2={y + ROW_HEIGHT / 2}
-                          stroke={color}
-                          strokeWidth={3}
-                          strokeLinecap="round"
-                        />
-                        {/* Start dot */}
-                        <circle
-                          cx={x1}
-                          cy={y + ROW_HEIGHT / 2}
-                          r={4}
-                          fill={color}
-                        />
-                        {/* End dot */}
-                        <circle
-                          cx={x1 + segWidth}
-                          cy={y + ROW_HEIGHT / 2}
-                          r={4}
-                          fill={color}
-                        />
-                      </g>
+                  {/* Step-line graph */}
+                  {(() => {
+                    const sorted = [...day.segments].sort(
+                      (a, b) =>
+                        new Date(a.start).getTime() -
+                        new Date(b.start).getTime(),
                     );
-                  })}
+
+                    const LINE_COLOR = "#3b82f6";
+                    const VERT_COLOR = "#3b82f6";
+
+                    const elements: React.ReactNode[] = [];
+
+                    sorted.forEach((seg, i) => {
+                      const x1 = timeToX(seg.start);
+                      const x2 = timeToX(seg.end, true);
+                      const rowIdx = getRowIndex(seg.type);
+                      const y = rowIdx * ROW_HEIGHT + ROW_HEIGHT / 2;
+                      const segWidth = Math.max(x2 - x1, 2);
+
+                      // Background fill
+                      elements.push(
+                        <rect
+                          key={`bg-${i}`}
+                          x={x1}
+                          y={rowIdx * ROW_HEIGHT + 4}
+                          width={segWidth}
+                          height={ROW_HEIGHT - 8}
+                          fill={LINE_COLOR}
+                          fillOpacity={0.08}
+                          rx={2}
+                        />,
+                      );
+
+                      // Horizontal line
+                      elements.push(
+                        <line
+                          key={`line-${i}`}
+                          x1={x1}
+                          y1={y}
+                          x2={x2}
+                          y2={y}
+                          stroke={LINE_COLOR}
+                          strokeWidth={2.5}
+                          strokeLinecap="round"
+                        />,
+                      );
+
+                      // Start dot
+                      elements.push(
+                        <circle
+                          key={`dot-start-${i}`}
+                          cx={x1}
+                          cy={y}
+                          r={3}
+                          fill={LINE_COLOR}
+                        />,
+                      );
+
+                      // End dot
+                      elements.push(
+                        <circle
+                          key={`dot-end-${i}`}
+                          cx={x2}
+                          cy={y}
+                          r={3}
+                          fill={LINE_COLOR}
+                        />,
+                      );
+
+                      // Vertical transition to next
+                      const next = sorted[i + 1];
+                      if (next) {
+                        const nextRowIdx = getRowIndex(next.type);
+                        const nextY = nextRowIdx * ROW_HEIGHT + ROW_HEIGHT / 2;
+
+                        elements.push(
+                          <line
+                            key={`vert-${i}`}
+                            x1={x2}
+                            y1={y}
+                            x2={x2}
+                            y2={nextY}
+                            stroke={VERT_COLOR}
+                            strokeWidth={2.5}
+                            strokeLinecap="round"
+                          />,
+                        );
+                      }
+                    });
+
+                    return elements;
+                  })()}
                 </svg>
 
                 {/* Hour labels */}
