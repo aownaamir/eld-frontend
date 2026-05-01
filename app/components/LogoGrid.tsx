@@ -63,17 +63,46 @@ function DayLogCard({ day }: { day: DayLog }) {
     (a, b) => new Date(a.start).getTime() - new Date(b.start).getTime(),
   );
 
+  const firstSegment = sorted[0];
+  const lastSegment = sorted[sorted.length - 1];
+
+  const dateStr = firstSegment
+    ? new Date(firstSegment.start).toLocaleDateString([], {
+        day: "2-digit",
+        month: "short",
+      })
+    : "";
+
+  const fromTime = firstSegment
+    ? new Date(firstSegment.start).toLocaleTimeString([], {
+        day: "2-digit",
+        month: "short",
+      })
+    : "";
+
+  const toTime = lastSegment
+    ? new Date(lastSegment.end).toLocaleTimeString([], {
+        day: "2-digit",
+        month: "short",
+      })
+    : "";
+
   return (
     <div className="bg-white border border-zinc-200 overflow-hidden">
       {/* Day Header */}
       <div className="flex items-center justify-between px-5 py-3.5 border-b border-zinc-100">
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-3">
           <div className="w-7 h-7 bg-red-600 flex items-center justify-center text-xs font-bold text-white">
             {day.day}
           </div>
-          <span className="font-semibold text-sm text-zinc-900">
-            Day {day.day}
-          </span>
+
+          <div className="flex flex-col leading-tight">
+            <span className="font-semibold text-sm text-zinc-900">
+              Day {day.day}
+            </span>
+
+            <span className="text-xs text-zinc-500">{dateStr}</span>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <span className="flex items-center gap-1.5 text-xs bg-red-50 text-red-600 border border-red-100 px-2.5 py-1">

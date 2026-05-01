@@ -63,7 +63,7 @@ export default function LocationInput({
               : "border-zinc-200 hover:border-zinc-300"
           }`}
         >
-          <span className="text-zinc-400 text-sm shrink-0">{icon ?? "📍"}</span>
+          {/* <span className="text-zinc-400 text-sm shrink-0">{icon ?? "📍"}</span> */}
 
           <input
             value={query}
@@ -83,9 +83,9 @@ export default function LocationInput({
                 setQuery("");
                 setResults([]);
               }}
-              className="w-4 h-4 flex items-center justify-center bg-zinc-100 hover:bg-zinc-200 text-zinc-400 hover:text-zinc-600 transition shrink-0 text-xs leading-none"
+              className="w-4 h-4 flex items-center justify-center text-zinc-400 hover:text-zinc-600 hover:cursor-pointer transition shrink-0 text-xs leading-none"
             >
-              ×
+              X
             </button>
           )}
         </div>
@@ -104,9 +104,9 @@ export default function LocationInput({
                 }}
                 className="flex items-start gap-3 px-4 py-3 hover:bg-zinc-50 cursor-pointer transition border-b border-zinc-100 last:border-0"
               >
-                <span className="text-zinc-300 text-xs mt-0.5 shrink-0">
+                {/* <span className="text-zinc-300 text-xs mt-0.5 shrink-0">
                   📍
-                </span>
+                </span> */}
                 <div className="flex flex-col min-w-0">
                   <span className="text-sm text-zinc-900 truncate font-medium">
                     {place.place_name.split(",")[0]}

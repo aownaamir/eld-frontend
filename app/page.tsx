@@ -56,9 +56,9 @@ export default function Home() {
                 <h2 className="text-sm font-semibold text-zinc-900">
                   Plan Your Trip
                 </h2>
-                <p className="text-xs text-zinc-400 mt-0.5">
+                {/* <p className="text-xs text-zinc-400 mt-0.5">
                   Enter trip details to generate ELD logs and your route.
-                </p>
+                </p> */}
               </div>
               <TripForm onSubmit={handleSubmit} loading={loading} />
             </div>
@@ -170,7 +170,7 @@ function SummaryCard({
         {label}
       </p>
       <p
-        className={`text-xl font-bold ${isEmpty ? "text-zinc-200" : "text-red-600"}`}
+        className={`text-xl font-bold ${isEmpty ? "text-transparent" : "text-red-600"}`}
       >
         {value}
         {unit && !isEmpty && (

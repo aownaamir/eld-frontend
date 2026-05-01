@@ -48,15 +48,15 @@ export default function MapView({ geometry, stops = [], fill = false }: Props) {
     if (!mapRef.current) return;
     mapInstance.current = new mapboxgl.Map({
       container: mapRef.current,
-      // Light map style to match white theme
       style: "mapbox://styles/mapbox/light-v11",
       center: [-98, 39],
       zoom: 3.5,
+      // attributionControl: false,
     });
-    mapInstance.current.addControl(
-      new mapboxgl.NavigationControl({ showCompass: false }),
-      "top-right",
-    );
+    // mapInstance.current.addControl(
+    //   new mapboxgl.NavigationControl({ showCompass: false }),
+    //   "top-right",
+    // );
     return () => {
       mapInstance.current?.remove();
     };
@@ -154,7 +154,7 @@ export default function MapView({ geometry, stops = [], fill = false }: Props) {
       />
 
       {/* Legend */}
-      <div className="absolute bottom-3 left-3 flex items-center gap-3 bg-white border border-zinc-200 px-3 py-2 shadow-sm">
+      {/* <div className="absolute bottom-3 left-3 flex items-center gap-3 bg-white border border-zinc-200 px-3 py-2 shadow-sm">
         {Object.entries(STOP_COLORS).map(([type, color]) => (
           <div key={type} className="flex items-center gap-1.5">
             <div
@@ -166,7 +166,7 @@ export default function MapView({ geometry, stops = [], fill = false }: Props) {
             </span>
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }
