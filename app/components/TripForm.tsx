@@ -60,13 +60,13 @@ export default function TripForm({ onSubmit, loading }: Props) {
         </div>
 
         {/* Divider */}
-        <div className="flex items-center gap-3">
+        {/* <div className="flex items-center gap-3">
           <div className="flex-1 h-px bg-zinc-100" />
           <span className="text-[10px] uppercase tracking-widest text-zinc-300 font-medium">
             Route
           </span>
           <div className="flex-1 h-px bg-zinc-100" />
-        </div>
+        </div> */}
 
         <div className="grid grid-cols-2 gap-3">
           <LocationInput

@@ -14,7 +14,7 @@ const ROWS = [
   { label: "On Duty", key: "on_duty" },
 ];
 
-const LINE_COLOR = "#18181b"; // single black throughout
+const LINE_COLOR = "#dc2626"; // 18181b
 
 const HOURS = Array.from({ length: 25 }, (_, i) => i);
 const ROW_HEIGHT = 44;
@@ -92,9 +92,9 @@ function DayLogCard({ day }: { day: DayLog }) {
       {/* Day Header */}
       <div className="flex items-center justify-between px-5 py-3.5 border-b border-zinc-100">
         <div className="flex items-center gap-3">
-          <div className="w-7 h-7 bg-red-600 flex items-center justify-center text-xs font-bold text-white">
+          {/* <div className="w-7 h-7 bg-red-600 flex items-center justify-center text-xs font-bold text-white">
             {day.day}
-          </div>
+          </div> */}
 
           <div className="flex flex-col leading-tight">
             <span className="font-semibold text-sm text-zinc-900">
@@ -105,12 +105,10 @@ function DayLogCard({ day }: { day: DayLog }) {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <span className="flex items-center gap-1.5 text-xs bg-red-50 text-red-600 border border-red-100 px-2.5 py-1">
-            <span className="w-1.5 h-1.5 bg-red-500 inline-block rounded-full" />
+          <span className="flex items-center gap-1.5 text-xs text-zinc-500 border border-zinc-200 px-2.5 py-1">
             {drivingHrs.toFixed(1)}h driving
           </span>
-          <span className="flex items-center gap-1.5 text-xs bg-amber-50 text-amber-600 border border-amber-100 px-2.5 py-1">
-            <span className="w-1.5 h-1.5 bg-amber-400 inline-block rounded-full" />
+          <span className="flex items-center gap-1.5 text-xs text-zinc-500 border border-zinc-200 px-2.5 py-1">
             {onDutyHrs.toFixed(1)}h on duty
           </span>
         </div>
@@ -144,7 +142,12 @@ function DayLogCard({ day }: { day: DayLog }) {
               height={svgHeight}
               viewBox={`0 0 ${gridWidth} ${svgHeight}`}
               preserveAspectRatio="none"
-              style={{ display: "block", background: "#fafafa" }}
+              style={{
+                display: "block",
+                background: "#ffffff",
+                border: "1px solid #e4e4e7",
+                borderRadius: 4,
+              }}
             >
               {/* Row backgrounds */}
               {ROWS.map((_, i) => (
@@ -154,7 +157,7 @@ function DayLogCard({ day }: { day: DayLog }) {
                   y={i * ROW_HEIGHT}
                   width={gridWidth}
                   height={ROW_HEIGHT}
-                  fill={i % 2 === 0 ? "#fafafa" : "#f4f4f5"}
+                  fill={i % 2 === 0 ? "#ffffff" : "#ffffff"}
                 />
               ))}
 
@@ -187,7 +190,7 @@ function DayLogCard({ day }: { day: DayLog }) {
                   y1={0}
                   x2={(h / 24) * gridWidth}
                   y2={svgHeight}
-                  stroke={h % 6 === 0 ? "#d4d4d8" : "#e4e4e7"}
+                  stroke={"#d4d4d8"}
                   strokeWidth={h % 6 === 0 ? 1.5 : 1}
                 />
               ))}
@@ -221,7 +224,7 @@ function DayLogCard({ day }: { day: DayLog }) {
                   <path
                     d={points.join(" ")}
                     stroke={LINE_COLOR}
-                    strokeWidth={2}
+                    strokeWidth={1.27}
                     strokeLinecap="square"
                     fill="none"
                   />
@@ -256,9 +259,9 @@ function DayLogCard({ day }: { day: DayLog }) {
                 .map((s, i) => (
                   <span
                     key={i}
-                    className="text-xs bg-zinc-50 text-zinc-500 px-3 py-1 border border-zinc-200"
+                    className="text-xs text-zinc-500 px-3 py-1 border border-zinc-200"
                   >
-                    {s.note} —{" "}
+                    {s.note.charAt(0).toUpperCase() + s.note.slice(1)} at{" "}
                     {new Date(s.start).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",

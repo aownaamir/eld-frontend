@@ -32,18 +32,18 @@ export default function Home() {
     <main className="min-h-screen bg-white text-zinc-900">
       {/* HEADER */}
       <header className="border-b border-zinc-200 px-8 py-4 flex items-center gap-3 bg-white">
-        <div className="w-7 h-7 bg-red-600 flex items-center justify-center text-white font-bold text-xs">
+        {/* <div className="w-7 h-7 bg-red-600 flex items-center justify-center text-white font-bold text-xs">
           EL
-        </div>
+        </div> */}
         <h1 className="text-base font-semibold tracking-tight text-zinc-900">
           ELD Trip Planner
         </h1>
-        <div className="ml-auto flex items-center gap-2">
+        {/* <div className="ml-auto flex items-center gap-2">
           <span className="w-1.5 h-1.5 bg-emerald-500 inline-block" />
           <span className="text-xs text-zinc-400">
             FMCSA Compliant · 70 hr / 8 day
           </span>
-        </div>
+        </div> */}
       </header>
 
       <div className="max-w-6xl mx-auto px-6 py-8 space-y-8">
