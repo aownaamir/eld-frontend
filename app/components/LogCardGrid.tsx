@@ -164,8 +164,7 @@ export default function LogCardGrid({
                   key={i}
                   className="text-xs text-zinc-500 px-2.5 sm:px-3 py-1 border border-zinc-200"
                 >
-                  {`${s?.note?.charAt(0).toUpperCase()} + ${s?.note?.slice(1)}`}{" "}
-                  at{" "}
+                  {`${s?.note?.charAt(0).toUpperCase()}${s?.note?.slice(1)}`} at{" "}
                   {new Date(s.start).toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
