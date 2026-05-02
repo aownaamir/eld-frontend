@@ -21,5 +21,6 @@ export type TripResponse = {
     total_days: number;
     total_distance: number;
     total_hours: number;
+    cycle_used: number;
   };
 };
