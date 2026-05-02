@@ -35,9 +35,9 @@ export default function Home() {
     <main className="min-h-screen bg-white text-zinc-900">
       <Header />
 
-      <div className="max-w-6xl mx-auto px-6 py-8 space-y-8">
-        <div className="flex gap-5 items-stretch">
-          <div className="w-[60%] shrink-0 flex flex-col gap-4">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8">
+        <div className="flex flex-col lg:flex-row gap-5 items-stretch">
+          <div className="w-full lg:w-[60%] lg:shrink-0 flex flex-col gap-4">
             <TripFormSection onSubmit={handleSubmit} loading={loading} />
             {error && <TripError error={error} />}
           </div>

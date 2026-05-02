@@ -7,7 +7,7 @@ export default function TripSummarySection({
   data: TripResponse | null;
 }) {
   return (
-    <div className="grid grid-cols-3 gap-3">
+    <div className="grid grid-cols-3 gap-2 sm:gap-3">
       {data ? (
         <>
           <SummaryCard label="Days" value={String(data.summary.total_days)} />

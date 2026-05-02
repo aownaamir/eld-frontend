@@ -25,7 +25,7 @@ export default function TextInput({
           value={value}
           placeholder={placeholder ?? label}
           onChange={(e) => onChange(e.target.value)}
-          className="bg-transparent text-sm text-zinc-900 placeholder-zinc-300 focus:outline-none w-full"
+          className={`bg-transparent text-sm placeholder-zinc-300 focus:outline-none w-full ${value !== "0" ? "text-zinc-900" : "text-zinc-300"}`}
         />
         <span className="text-xs text-zinc-300 shrink-0">/ 70</span>
       </div>

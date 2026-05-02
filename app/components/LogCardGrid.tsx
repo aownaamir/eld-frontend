@@ -32,7 +32,7 @@ export default function LogCardGrid({
   const svgHeight = ROW_HEIGHT * ROWS.length;
 
   return (
-    <div className="px-5 py-4">
+    <div className="px-3 sm:px-5 py-3 sm:py-4">
       <div className="flex gap-0">
         {/* Row Labels */}
         <div className="shrink-0 flex flex-col" style={{ width: LABEL_WIDTH }}>
@@ -42,7 +42,7 @@ export default function LogCardGrid({
               className="flex items-center"
               style={{ height: ROW_HEIGHT }}
             >
-              <span className="text-xs font-medium text-zinc-500">
+              <span className="text-[10px] sm:text-xs font-medium text-zinc-500 leading-tight">
                 {r.label}
               </span>
             </div>
@@ -122,7 +122,6 @@ export default function LogCardGrid({
                 } else {
                   points.push(`V ${y}`);
                 }
-                // horizontal segment
                 points.push(`H ${x2}`);
               });
 
@@ -153,7 +152,7 @@ export default function LogCardGrid({
       </div>
 
       {day.segments.some((s: Segment) => s.note) && (
-        <div className="mt-4 pt-3.5 border-t border-zinc-100">
+        <div className="mt-3 sm:mt-4 pt-3 sm:pt-3.5 border-t border-zinc-100">
           <p className="text-[10px] text-zinc-400 uppercase tracking-widest mb-2 font-medium">
             Remarks
           </p>
@@ -163,7 +162,7 @@ export default function LogCardGrid({
               .map((s: Segment, i: number) => (
                 <span
                   key={i}
-                  className="text-xs text-zinc-500 px-3 py-1 border border-zinc-200"
+                  className="text-xs text-zinc-500 px-2.5 sm:px-3 py-1 border border-zinc-200"
                 >
                   {`${s?.note?.charAt(0).toUpperCase()} + ${s?.note?.slice(1)}`}{" "}
                   at{" "}

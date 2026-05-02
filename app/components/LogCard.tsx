@@ -52,7 +52,6 @@ export default function LogCard({ day }: { day: DayLog }) {
         drivingHrs={drivingHrs}
         onDutyHrs={onDutyHrs}
       />
-
       <LogCardGrid
         day={day}
         gridWidth={gridWidth}

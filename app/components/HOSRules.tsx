@@ -17,7 +17,7 @@ export default function HOSRules() {
         {HOS_RULES.map(({ rule, desc }) => (
           <div
             key={rule + desc}
-            className="flex items-baseline gap-2 py-1.5 border-b border-zinc-100 last:border-0"
+            className="flex items-baseline gap-2 py-3 border-b border-zinc-100 last:border-0"
           >
             <span className="text-sm font-medium text-zinc-900 tabular-nums w-14 shrink-0">
               {rule}
