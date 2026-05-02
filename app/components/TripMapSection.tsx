@@ -12,16 +12,11 @@ export default function TripMapSection({
         <h3 className="text-[11px] font-semibold uppercase tracking-widest text-zinc-400">
           Route Map
         </h3>
-        {data && (
-          <span className="text-[11px] text-zinc-400">
-            {data.stops?.length ?? 0} stops
-          </span>
-        )}
       </div>
 
       {data ? (
         <div className="flex-1 min-h-0">
-          <MapView geometry={data.route.geometry} stops={data.stops} fill />
+          <MapView geometry={data.route.geometry} fill />
         </div>
       ) : (
         <div className="flex-1 flex flex-col items-center justify-center gap-2 text-zinc-300">

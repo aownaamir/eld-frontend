@@ -110,7 +110,7 @@ export default function LogCardGrid({
 
               const points: string[] = [];
 
-              sorted.forEach((seg, i) => {
+              sorted.forEach((seg: Segment, i: number) => {
                 const rowIdx = getRowIndex(seg.type);
                 if (rowIdx < 0) return;
                 const x1 = timeToFraction(seg.start) * gridWidth;
@@ -152,20 +152,21 @@ export default function LogCardGrid({
         </div>
       </div>
 
-      {day.segments.some((s) => s.note) && (
+      {day.segments.some((s: Segment) => s.note) && (
         <div className="mt-4 pt-3.5 border-t border-zinc-100">
           <p className="text-[10px] text-zinc-400 uppercase tracking-widest mb-2 font-medium">
             Remarks
           </p>
           <div className="flex flex-wrap gap-1.5">
             {day.segments
-              .filter((s) => s.note)
-              .map((s, i) => (
+              .filter((s: Segment) => s.note)
+              .map((s: Segment, i: number) => (
                 <span
                   key={i}
                   className="text-xs text-zinc-500 px-3 py-1 border border-zinc-200"
                 >
-                  {s.note.charAt(0).toUpperCase() + s.note.slice(1)} at{" "}
+                  {`${s?.note?.charAt(0).toUpperCase()} + ${s?.note?.slice(1)}`}{" "}
+                  at{" "}
                   {new Date(s.start).toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
