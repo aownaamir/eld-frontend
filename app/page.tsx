@@ -20,7 +20,7 @@ export default function Home() {
     setError("");
     try {
       const res = await axios.post<TripResponse>(
-        "http://127.0.0.1:8000/api/trip/",
+        `${process.env.NEXT_PUBLIC_API_URL}/trip/`,
         form,
       );
       setData(res.data);
